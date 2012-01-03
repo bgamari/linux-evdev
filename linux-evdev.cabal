@@ -10,7 +10,7 @@ Build-type:          Simple
 Cabal-version:       >=1.2
 
 Library
-  Exposed-modules:   System.Linux.Input.Event
+  Exposed-modules:   System.Linux.Input.Event, System.Linux.Input.Event.Constants
   Build-tools:       hsc2hs
   Build-depends:     base, bytestring, time
   
