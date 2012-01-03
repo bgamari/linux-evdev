@@ -8,37 +8,41 @@ import Data.Int
 
 #include <linux/input.h>
 
-newtype EventType = EventType Word16 deriving (Show, Eq)
-#{enum EventType, EventType
- , syn         = EV_SYN
- , key         = EV_KEY
- , rel         = EV_REL
- , abs         = EV_ABS
- , msc         = EV_MSC
- , sw          = EV_SW 
- , led         = EV_LED
- , snd         = EV_SND
- , rep         = EV_REP
- , ff          = EV_FF 
- , ff_status   = EV_FF_STATUS
- , pwr         = EV_PWR
- }
-
 newtype SyncType = SyncType Word16 deriving (Show, Eq)
 #{enum SyncType, SyncType
- , report      = SYN_REPORT
- , config      = SYN_CONFIG
- , mt_report   = SYN_MT_REPORT
- , dropped     = SYN_DROPPED
+ , sync_report      = SYN_REPORT
+ , sync_config      = SYN_CONFIG
+ , sync_mt_report   = SYN_MT_REPORT
+ , sync_dropped     = SYN_DROPPED
  }
 
 -- TODO Finish
 newtype Key = Key Word16 deriving (Show, Eq)
 #{enum Key, Key
- , reserved    = KEY_RESERVED
- , esc         = KEY_ESC
+ , key_reserved    = KEY_RESERVED
+ , key_esc         = KEY_ESC
  }
 
 newtype RelAxis = RelAxis Word16 deriving (Show, Eq)
+#{enum RelAxis, RelAxis
+ , rel_x            = REL_X
+ , rel_y            = REL_Y
+ , rel_z            = REL_Z
+ , rel_rx           = REL_RX
+ , rel_ry           = REL_RY
+ , rel_rz           = REL_RZ
+ , rel_hWheel       = REL_HWHEEL
+ , rel_dial         = REL_DIAL
+ , rel_wheel        = REL_WHEEL
+ , rel_misc         = REL_MISC
+ }
 
 newtype AbsAxis = AbsAxis Word16 deriving (Show, Eq)
+#{enum AbsAxis, AbsAxis
+ , abs_x            = ABS_X
+ , abs_y            = ABS_Y
+ , abs_z            = ABS_Z
+ , abs_rx           = ABS_RX
+ , abs_ry           = ABS_RY
+ , abs_rz           = ABS_RZ
+ }
