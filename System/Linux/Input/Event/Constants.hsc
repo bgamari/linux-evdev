@@ -23,26 +23,54 @@ newtype Key = Key Word16 deriving (Show, Eq)
  , key_esc         = KEY_ESC
  }
 
-newtype RelAxis = RelAxis Word16 deriving (Show, Eq)
-#{enum RelAxis, RelAxis
- , rel_x            = REL_X
- , rel_y            = REL_Y
- , rel_z            = REL_Z
- , rel_rx           = REL_RX
- , rel_ry           = REL_RY
- , rel_rz           = REL_RZ
- , rel_hWheel       = REL_HWHEEL
- , rel_dial         = REL_DIAL
- , rel_wheel        = REL_WHEEL
- , rel_misc         = REL_MISC
- }
+data RelAxis = RelX | RelY | RelZ
+             | RelRX | RelRY | RelRZ
+             | RelHWheel
+             | RelDial
+             | RelWheel
+             | RelMisc
+             deriving (Show, Eq, Ord)
 
-newtype AbsAxis = AbsAxis Word16 deriving (Show, Eq)
-#{enum AbsAxis, AbsAxis
- , abs_x            = ABS_X
- , abs_y            = ABS_Y
- , abs_z            = ABS_Z
- , abs_rx           = ABS_RX
- , abs_ry           = ABS_RY
- , abs_rz           = ABS_RZ
- }
+instance Enum RelAxis where
+    toEnum REL_X        = RelX
+    toEnum REL_Y        = RelY
+    toEnum REL_Z        = RelZ
+    toEnum REL_RX       = RelRX
+    toEnum REL_RY       = RelRY
+    toEnum REL_RZ       = RelRZ
+    toEnum REL_HWHEEL   = RelHWheel
+    toEnum REL_DIAL     = RelDial
+    toEnum REL_WHEEL    = RelWheel
+    toEnum REL_MISC     = RelMisc
+    toEnum _            = error $ "toEnum(RelAxis): Unknown relative axis type: "++show x
+
+    fromEnum RelX         = REL_X
+    fromEnum RelY         = REL_Y
+    fromEnum RelZ         = REL_Z
+    fromEnum RelRX        = REL_RX
+    fromEnum RelRY        = REL_RY
+    fromEnum RelRZ        = REL_RZ
+    fromEnum RelHWheel    = REL_HWHEEL
+    fromEnum RelDial      = REL_DIAL
+    fromEnum RelWheel     = REL_WHEEL
+    fromEnum RelMisc      = REL_MISC
+
+data AbsAxis = AbsX | AbsY | AbsZ
+             | AbsRX | AbsRY | AbsRZ
+             deriving (Show, Eq, Ord)
+
+instance Enum AbsAxis where
+    toEnum ABS_X        = AbsX
+    toEnum ABS_Y        = AbsY
+    toEnum ABS_Z        = AbsZ
+    toEnum ABS_RX       = AbsRX
+    toEnum ABS_RY       = AbsRY
+    toEnum ABS_RZ       = AbsRZ
+    toEnum _            = error $ "toEnum(AbsAxis): Unknown relative axis type: "++show x
+
+    fromEnum AbsX         = ABS_X
+    fromEnum AbsY         = ABS_Y
+    fromEnum AbsZ         = ABS_Z
+    fromEnum AbsRX        = ABS_RX
+    fromEnum AbsRY        = ABS_RY
+    fromEnum AbsRZ        = ABS_RZ
