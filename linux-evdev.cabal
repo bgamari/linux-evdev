@@ -8,7 +8,7 @@ Author:              Ben Gamari
 Maintainer:          bgamari.foss@gmail.com
 Category:            System
 Build-type:          Simple
-Cabal-version:       >=1.2
+Cabal-version:       >=1.6
 
 Library
   Exposed-modules:   System.Linux.Input.Event, System.Linux.Input.Event.Constants
@@ -16,4 +16,8 @@ Library
   Build-depends:     base           >= 4.0         && < 5.0,
                      time           >= 1.4         && < 1.5,
                      bytestring     >= 0.9         && < 0.11
-  
+ 
+source-repository head
+  type:              git
+  location:          git://github.com/bgamari/linux-evdev.git
+
