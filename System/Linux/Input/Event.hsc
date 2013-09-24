@@ -1,6 +1,7 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 
-module System.Linux.Input.Event ( Event(..)
+module System.Linux.Input.Event ( -- * Events
+                                  Event(..)
                                 , hReadEvent
                                 , module System.Linux.Input.Event.Constants
                                 ) where
@@ -22,6 +23,7 @@ import System.Linux.Input.Event.Constants
 
 #include <linux/input.h>
 
+-- | An Event
 data Event = SyncEvent { evTimestamp :: DiffTime
                        , evSyncCode :: SyncType }
            | KeyEvent { evTimestamp :: DiffTime
@@ -73,17 +75,16 @@ instance Storable Event where
 
   poke = undefined
 
+-- | Read an event
 hReadEvent :: Handle -> IO (Maybe Event)
-hReadEvent h =
-  do a <- hGet h $ sizeOf (undefined::Event)
-     case a of
-          _ | BS.null a  -> return Nothing
-          _ | otherwise  -> getEvent a >>= return . Just
+hReadEvent h = do
+    a <- hGet h $ sizeOf (undefined::Event)
+    case a of
+         _ | BS.null a  -> return Nothing
+         _ | otherwise  -> getEvent a >>= return . Just
 
 getEvent :: ByteString -> IO Event
-getEvent bs =
-  do let (fptr, off, len) = toForeignPtr bs
-     print off
-     print len
-     withForeignPtr fptr $ peek . castPtr 
+getEvent bs = do
+    let (fptr, off, len) = toForeignPtr bs
+    withForeignPtr fptr $ peek . castPtr 
 
