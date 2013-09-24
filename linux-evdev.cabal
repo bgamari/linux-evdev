@@ -1,6 +1,7 @@
 Name:                linux-evdev
 Version:             0.1
 Synopsis:            Bindings to Linux evdev input device interface.
+Description:         Bindings to Linux evdev input device interface.
 License:             BSD3
 License-file:        LICENSE
 Author:              Ben Gamari
@@ -12,5 +13,7 @@ Cabal-version:       >=1.2
 Library
   Exposed-modules:   System.Linux.Input.Event, System.Linux.Input.Event.Constants
   Build-tools:       hsc2hs
-  Build-depends:     base, bytestring, time
+  Build-depends:     base           >= 4.0         && < 5.0,
+                     time           >= 1.4         && < 1.5,
+                     bytestring     >= 0.9         && < 0.11
   
