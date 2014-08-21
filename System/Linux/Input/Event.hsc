@@ -27,7 +27,8 @@ import System.Linux.Input.Event.Constants
 data Event = SyncEvent { evTimestamp :: DiffTime
                        , evSyncCode :: SyncType }
            | KeyEvent { evTimestamp :: DiffTime
-                      , evKeyCode :: Key }
+                      , evKeyCode :: Key
+                      , evKeyEventType :: KeyEventType }
            | RelEvent { evTimestamp :: DiffTime
                       , evRelAxis :: RelAxis
                       , evValue :: Int32 }
@@ -41,7 +42,10 @@ data Event = SyncEvent { evTimestamp :: DiffTime
            | RepEvent { evTimestamp :: DiffTime }
            | FfEvent { evTimestamp :: DiffTime }
            | FfStatusEvent { evTimestamp :: DiffTime }
-             deriving (Show, Eq)
+           deriving (Show, Eq)
+
+data KeyEventType = Released | Depressed | Repeated
+                  deriving (Show, Eq, Ord, Enum, Bounded)
 
 instance Storable Event where
   sizeOf _ = (#size struct input_event)
@@ -57,7 +61,8 @@ instance Storable Event where
                      (#const EV_SYN)     -> SyncEvent { evTimestamp = picosecondsToDiffTime t
                                                       , evSyncCode = SyncType code }
                      (#const EV_KEY)     -> KeyEvent { evTimestamp = picosecondsToDiffTime t
-                                                     , evKeyCode = Key code }
+                                                     , evKeyCode = Key code
+                                                     , evKeyEventType = toEnum (fromIntegral value) }
                      (#const EV_REL)     -> RelEvent { evTimestamp = picosecondsToDiffTime t
                                                      , evRelAxis = RelAxis code
                                                      , evValue = value }
