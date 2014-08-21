@@ -3,6 +3,7 @@
 module System.Linux.Input.Event ( -- * Events
                                   Event(..)
                                 , hReadEvent
+                                , KeyEventType(..)
                                 , module System.Linux.Input.Event.Constants
                                 ) where
 
