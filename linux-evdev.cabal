@@ -9,6 +9,7 @@ Maintainer:          bgamari.foss@gmail.com
 Category:            System
 Build-type:          Simple
 Cabal-version:       >=1.6
+Homepage:            http://github.com/bgamari/linux-evdev
 
 Library
   Exposed-modules:   System.Linux.Input.Event, System.Linux.Input.Event.Constants
