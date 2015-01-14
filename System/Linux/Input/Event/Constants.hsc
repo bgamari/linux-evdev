@@ -21,6 +21,17 @@ newtype Key = Key Word16 deriving (Show, Eq)
 #{enum Key, Key
  , key_reserved    = KEY_RESERVED
  , key_esc         = KEY_ESC
+
+ , btn_0           = BTN_0
+ , btn_1           = BTN_1
+ , btn_2           = BTN_2
+ , btn_3           = BTN_3
+ , btn_4           = BTN_4
+ , btn_5           = BTN_5
+ , btn_6           = BTN_6
+ , btn_7           = BTN_7
+ , btn_8           = BTN_8
+ , btn_9           = BTN_9
  }
 
 newtype RelAxis = RelAxis Word16 deriving (Show, Eq)

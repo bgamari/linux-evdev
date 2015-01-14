@@ -12,11 +12,14 @@ Cabal-version:       >=1.6
 Homepage:            http://github.com/bgamari/linux-evdev
 
 Library
-  Exposed-modules:   System.Linux.Input.Event, System.Linux.Input.Event.Constants
+  Exposed-modules:   System.Linux.Input.Event,
+                     System.Linux.Input.Event.Constants,
+                     System.Linux.Input.Device
   Build-tools:       hsc2hs
   Build-depends:     base           >= 4.0         && < 5.0,
                      time           >= 1.4         && < 1.5,
-                     bytestring     >= 0.9         && < 0.11
+                     bytestring     >= 0.9         && < 0.11,
+                     unix           >= 2.6         && < 2.8
  
 source-repository head
   type:              git

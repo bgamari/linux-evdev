@@ -3,6 +3,7 @@
 module System.Linux.Input.Event ( -- * Events
                                   Event(..)
                                 , hReadEvent
+                                , KeyEventType(..)
                                 , module System.Linux.Input.Event.Constants
                                 ) where
 
@@ -26,22 +27,26 @@ import System.Linux.Input.Event.Constants
 -- | An Event
 data Event = SyncEvent { evTimestamp :: DiffTime
                        , evSyncCode :: SyncType }
-           | KeyEvent { evTimestamp :: DiffTime
-                      , evKeyCode :: Key }
-           | RelEvent { evTimestamp :: DiffTime
-                      , evRelAxis :: RelAxis
-                      , evValue :: Int32 }
-           | AbsEvent { evTimestamp :: DiffTime
-                      , evAbsAxis :: AbsAxis
-                      , evValue :: Int32 }
-           | MscEvent { evTimestamp :: DiffTime }
-           | SwEvent { evTimestamp :: DiffTime }
-           | LedEvent { evTimestamp :: DiffTime }
-           | SndEvent { evTimestamp :: DiffTime }
-           | RepEvent { evTimestamp :: DiffTime }
-           | FfEvent { evTimestamp :: DiffTime }
+           | KeyEvent  { evTimestamp :: DiffTime
+                       , evKeyCode :: Key
+                       , evKeyEventType :: KeyEventType }
+           | RelEvent  { evTimestamp :: DiffTime
+                       , evRelAxis :: RelAxis
+                       , evValue :: Int32 }
+           | AbsEvent  { evTimestamp :: DiffTime
+                       , evAbsAxis :: AbsAxis
+                       , evValue :: Int32 }
+           | MscEvent  { evTimestamp :: DiffTime }
+           | SwEvent   { evTimestamp :: DiffTime }
+           | LedEvent  { evTimestamp :: DiffTime }
+           | SndEvent  { evTimestamp :: DiffTime }
+           | RepEvent  { evTimestamp :: DiffTime }
+           | FfEvent   { evTimestamp :: DiffTime }
            | FfStatusEvent { evTimestamp :: DiffTime }
-             deriving (Show, Eq)
+           deriving (Show, Eq)
+
+data KeyEventType = Released | Depressed | Repeated
+                  deriving (Show, Eq, Ord, Enum, Bounded)
 
 instance Storable Event where
   sizeOf _ = (#size struct input_event)
@@ -55,15 +60,20 @@ instance Storable Event where
                 let t = 1000000000000*fromIntegral (sec::Int) + 1000000*fromIntegral (usec::Int)
                 return $ case _type of
                      (#const EV_SYN)     -> SyncEvent { evTimestamp = picosecondsToDiffTime t
-                                                      , evSyncCode = SyncType code }
+                                                      , evSyncCode = SyncType code
+                                                      }
                      (#const EV_KEY)     -> KeyEvent { evTimestamp = picosecondsToDiffTime t
-                                                     , evKeyCode = Key code }
+                                                     , evKeyCode = Key code
+                                                     , evKeyEventType = toEnum (fromIntegral value)
+                                                     }
                      (#const EV_REL)     -> RelEvent { evTimestamp = picosecondsToDiffTime t
                                                      , evRelAxis = RelAxis code
-                                                     , evValue = value }
+                                                     , evValue = value
+                                                     }
                      (#const EV_ABS)     -> AbsEvent { evTimestamp = picosecondsToDiffTime t
                                                      , evAbsAxis = AbsAxis code
-                                                     , evValue = value }
+                                                     , evValue = value
+                                                     }
                      (#const EV_MSC)     -> MscEvent { evTimestamp = picosecondsToDiffTime t }
                      (#const EV_SW )     -> SwEvent { evTimestamp = picosecondsToDiffTime t }
                      (#const EV_LED)     -> LedEvent { evTimestamp = picosecondsToDiffTime t }
@@ -73,7 +83,7 @@ instance Storable Event where
                      (#const EV_FF_STATUS) -> FfStatusEvent { evTimestamp = picosecondsToDiffTime t }
                      otherwise  -> error $ "unknown event type: " ++ show _type
 
-  poke = undefined
+  poke = error "Storable(System.Linux.Input.Event): poke not supported"
 
 -- | Read an event
 hReadEvent :: Handle -> IO (Maybe Event)
