@@ -1,5 +1,6 @@
 Name:                linux-evdev
 Version:             0.3.2
+x-revision:          1
 Synopsis:            Bindings to Linux evdev input device interface.
 Description:         Bindings to Linux evdev input device interface.
 License:             BSD3
